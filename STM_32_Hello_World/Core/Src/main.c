@@ -89,6 +89,8 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
+  bool vibrate_on = false;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -107,13 +109,21 @@ int main(void)
 	  }
 	  */
 	  if(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin)){ //Note that the B1 button has a pull-up resistor -> 1 when not pressed, 0 when pressed
-	  	  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 	  	  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);
 	  }
 	  else{
-		  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
 		  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET);
 	  }
+
+	  /*if(!(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin))){
+		  if(vibrate_on){
+			  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+			  vibrate_on = false;
+		  }else{
+			  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+			  vibrate_on = true;
+		  }
+	  }*/
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
