@@ -23,6 +23,14 @@ HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
 /* USER CODE END 2 */
 
 /* USER CODE BEGIN 4 */
+
+void LogButtonPressUART(char *button, uint32_t pressCount, uint32_t timeElapsed)
+{
+    char buffer[100];
+    snprintf(buffer, sizeof(buffer), "Button %s pressed %lu times. Time since last press: %lu ms\r\n", button, pressCount, timeElapsed);
+    HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 1000);
+}
+
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
     if(GPIO_Pin == BUTTON1_PIN)
@@ -36,6 +44,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         }
         lastButton1PressTime = currentTime;
         button1Pressed = true;
+        LogButtonPressUART("1", button1PressCount, currentTime - lastButton1PressTime);
     }
     else if(GPIO_Pin == BUTTON2_PIN)
     {
@@ -48,6 +57,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         }
         lastButton2PressTime = currentTime;
         button2Pressed = true;
+        LogButtonPressUART("2", button2PressCount, currentTime - lastButton2PressTime);
     }
 }
 /* USER CODE END 4 */
